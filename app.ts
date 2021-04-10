@@ -1,6 +1,6 @@
 require('colors')
 import { guardarDB, leerDB } from "./helpers/guardarArchivo";
-import { inquirerMenu, pausa, leerInput,listadoTareasBorrar,confirmar } from "./helpers/inquirer";
+import { inquirerMenu, pausa, leerInput,listadoTareasBorrar,confirmar, checkBox} from "./helpers/inquirer";
 import { Tareas } from "./models/tareas";
 
 console.clear()
@@ -38,7 +38,17 @@ const main = async () => {
                 tareas.listarPendienteCompletadas(false, tareas.listadoArr)
                 break;
             case '5':
-                tareas.listarPendienteCompletadas(false, tareas.listadoArr)
+                const tareasFilter = tareas.listadoArr.filter(tarea => !tarea.completadoEn)
+                if (tareasFilter.length !== 0) {
+                const checkeds = await checkBox(tareasFilter)
+                    const ok = await confirmar('Estas seguro de completar estas tareas')
+                    if (ok) {
+                        tareas.completarTareas(checkeds)
+                    } 
+                } else {
+                    console.log('No existen tareas a completar');
+                    
+                }
                 break;
             case '6':
                 const id = await listadoTareasBorrar(tareas.listadoArr)

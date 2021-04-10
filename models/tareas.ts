@@ -57,6 +57,12 @@ class Tareas {
         }
     }
 
+    completarTareas(tareas:Array<any>) {
+        tareas.forEach((tarea) => {
+            this._listado[tarea].completadoEn = new Date()
+        })
+    }
+
 }
 
 export { Tareas }

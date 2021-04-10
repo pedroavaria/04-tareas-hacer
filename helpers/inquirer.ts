@@ -4,7 +4,7 @@ import inquirer from 'inquirer'
 const preguntas = [
     {
         type: 'list',
-        name:'opcion',
+        name: 'opcion',
         message: '¿Que desa hacer?',
         choices: [{
             value: '1',
@@ -37,22 +37,22 @@ const preguntas = [
     }
 ]
 
-const inquirerMenu = async() => {
+const inquirerMenu = async () => {
     console.clear();
-    
+
     console.log('========================='.green)
     console.log('  Seleccione una opción'.white);
     console.log('=========================\n'.green)
 
-    const {opcion} = await inquirer.prompt(preguntas)
+    const { opcion } = await inquirer.prompt(preguntas)
 
     return opcion
 }
 
-const pausa = async() => {
+const pausa = async () => {
     const questions = [
         {
-            type:'input',
+            type: 'input',
             name: 'enter',
             message: `Presione ${'ENTER'.green} para continuar`
         }
@@ -61,13 +61,13 @@ const pausa = async() => {
     await inquirer.prompt(questions)
 }
 
-const leerInput = async(message:string) => {
+const leerInput = async (message: string) => {
     const questions = [
         {
             type: 'input',
             name: 'desc',
             message,
-            validate(value:string) {
+            validate(value: string) {
                 if (value.length === 0) {
                     return 'Por favor ingrese un valor'
                 }
@@ -76,15 +76,15 @@ const leerInput = async(message:string) => {
         }
     ]
 
-    const {desc} =  await inquirer.prompt(questions)
+    const { desc } = await inquirer.prompt(questions)
     return desc
 }
 
 
-const listadoTareasBorrar = async(tareas:Array<any>) => {
-    
-    const choices = tareas.map((tarea,key) => {
-        const idx = `${key+1}.`.green
+const listadoTareasBorrar = async (tareas: Array<any>) => {
+
+    const choices = tareas.map((tarea, key) => {
+        const idx = `${key + 1}.`.green
         return {
             value: tarea.id,
             name: `${idx} ${tarea.desc}`
@@ -92,21 +92,21 @@ const listadoTareasBorrar = async(tareas:Array<any>) => {
     })
     choices.push({
         value: '0',
-        name: '0'.green+' Volver'
+        name: '0'.green + ' Volver'
     })
     const preguntas = [
         {
             type: 'list',
-            name:'opcion',
+            name: 'opcion',
             message: 'Borrar',
             choices
         }
     ]
-    const {opcion} =  await inquirer.prompt(preguntas)
+    const { opcion } = await inquirer.prompt(preguntas)
     return opcion
 }
 
-const confirmar = async(message:string) => {
+const confirmar = async (message: string) => {
     const preguntas = [
         {
             type: 'confirm',
@@ -115,8 +115,28 @@ const confirmar = async(message:string) => {
         }
     ]
 
-    const {ok} =  await inquirer.prompt(preguntas)
+    const { ok } = await inquirer.prompt(preguntas)
     return ok
 }
 
-export {inquirerMenu, pausa,leerInput,listadoTareasBorrar,confirmar}
+const checkBox = async (tareas: Array<any>) => {
+    const choices = tareas.map((tarea, key) => {
+        const idx = `${key + 1}.`.green
+        return {
+            value: tarea.id,
+            name: `${idx} ${tarea.desc}`
+        }
+    })
+    const preguntas = [{
+        type: 'checkbox',
+        name: 'checked',
+        message: 'Seleccione las tareas a completar',
+        choices
+    }]
+
+    const { checked } = await inquirer.prompt(preguntas)
+
+    return checked
+}
+
+export { inquirerMenu, pausa, leerInput, listadoTareasBorrar, confirmar, checkBox }
